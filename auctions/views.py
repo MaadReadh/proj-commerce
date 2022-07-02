@@ -157,22 +157,38 @@ def show_listing(request, id):
 
 
 def watchlist(requset, id):
-  list = Watchlist.objects.all().filter(user=requset.user)
-  if list.on_watch_list == True:
-        list.on_watch_list = False
-        list.save()
-  elif list.on_watch_list == False:
-        list.on_watch_list = True
-        list.save()
-  return redirect('show_list')
-   
+  list = Listing.objects.get(id=id)
+  obj = Watchlist.objects.all().filter(listing=list, user_id=id)
+  if obj:
+      list.on_watch_list == True
+      obj.delete()
+      obj.save()
+  else:
+      list.on_watch_list == False
+      obj.create()
+      obj.save()
+      return redirect('show_list',id)
 
-@login_required
-def show_watchlist(request, id):
- list=Watchlist.objects.all().filter(listing_id=id, on_watch_list=True)
+def show_watchlist(request):
+ list=Watchlist.objects.all()
  return render(request, 'auctions/watchlist.html', context={
         'listings': list
     })  
+
+#   if list.on_watch_list == True:
+#         list.on_watch_list = False
+#         obj.create()
+#         obj.save()
+#   elif  list.on_watch_list == False:
+#         list.on_watch_list = True
+#         obj.delete()
+#         return redirect('show_list',id)
+ 
+# def show_watchlist(request):
+#  list=Watchlist.objects.all()
+#  return render(request, 'auctions/watchlist.html', context={
+#         'listings': list
+#     })  
 
 
 def show_closed_listing(request):

@@ -25,7 +25,7 @@ class Listing(models.Model):
     imgurl = models.URLField(max_length=200)
     date = models.DateTimeField(default=timezone.now)
     price = models.FloatField()
-    
+    on_watch_list = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Comment(models.Model):
 class Watchlist(models.Model):
      user = models.ForeignKey(User,on_delete=models.CASCADE)
      listing = models.ForeignKey(Listing,on_delete=models.CASCADE,blank=True)
-     on_watch_list = models.BooleanField(default=False)
+     
 
      def __str__(self):
         return f'{self.user}: whichList'
